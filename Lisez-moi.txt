@@ -1,0 +1,101 @@
+______________________________________________________________________________	   
+_________________________________WOLFENSTEIN__________________________________     
+_____________________________________3D_______________________________________	 #    	                 # # # # #          #                  # # # # # # # #
+										                                          #	                    #           #      #                  #
+# ########################################################################## #     #         #         #             #    #                  #
+# Lisez-moi.txt								                                 #      #       # #       #              #   #                  #              # # #
+# Version 0.8 (05 Janvier 2019)                                              #       #     #   #     #               #  #                  # # # # # #    # # #  
+# PAJANY Allan                                                               #        #   #     #   #               #  #                  #
+# 3ème Annee - License Informatique - UTLN                                   #         # #       # #  #            #  #                  #
+# ########################################################################## #          #         #     # # # # #    # # # # # # # # #  #
+
+			          Contenu
+# -------------------------------------------------------------------------- #    # # # # # #  #       #   # # # # #  # # # # # # #  # # # # # #  #  #       #
+Vous trouverez dans ce projet :                                                   #            # #     #  #                 #        #            #  # #     #
+I) Un module principale : "Main.py".                                              #            #  #    #  #                 #        #            #  #  #    #
+   Quatre modules secondaires : "Animation.py", "Carte.py", "Personnages.py"      # # # #      #   #   #   # # # #          #        # # # #      #  #   #   #
+   et "Raycating.py".							                                  # # # #      #    #  #     # # # #        #        # # # #      #  #    #  #
+ 										                                          #            #     # #            #       #        #            #  #     # #          
+    -- Annimation.py -- contient toutes les fonctions liés aux dessins et à       #            #      ##            #       #        #            #  #      ##         /|\
+       l'annimation du monde et de la carte.				                     .#_#_#_#_#_#__#_______#. # # # # #         #        #.#_#_#_#_#__#__#_______#.	      / | \
+                                                                                 |                      |\         ,,,,,,,,          /|                       |      /  |  \
+    -- Carte.py -- contient les informations pour créer la minimap ainsi que     |                      | \        | o  o |         / |                       |     /   |   |
+       sa matrice. Les constantes principales y sont aussi définis.              |______________________|  \	   |   )  |        /  |_______________________|    /    |   |
+                                                                                 |       	            |   \       \(--)/        /   |                       |   /     |   |
+    -- Personnages.py -- regroupe toutes les fonctions permettant le placement   |                      |    ]         *         [    |                       |  /      |   |
+       et déplacement du joueur.                                                 |   # # # # # # #      |    ]____     |     ____[    |    # # # # # #        |_/       |   |
+                                                                                 |                #     |    ]   ]\   / \   /[   [    |    #            #     |         |   |
+    -- Raycasting.py -- dispose des fonctions pour la création du moteur défi-   |                #     |    ]   ]  \/~^~\ / [   [    |    #             #    |         |   |
+       nissant le raycasting, le calcul d'intersections, lancer de rayons ...    |                #     |    ]   ]  ]^~^~^[  [   [    |    #              #   |         |   |
+                                                                                 |     # # # # # #      |    ]   ]  ]~^~^~[  [   [    |    #              #   |         |   |
+II) Deux dossiers Images et Musiques contenant, textures des murs et musiques.   |     # # # # # #      |    ]   ]  ]/ _ \[  [   [    |    #              #   |         |   |
+                                                                                 |                #     |    ]   ] /   _   \ [   [    |    #              #   |         |   | 
+     	        		Projet				                                     |                #     |    ]___]/    _    \[___[    |    #             #    |         |   |
+# -------------------------------------------------------------------------- #	 |                #     |    ]         _         [    |    #           #      |         |   |
+Dans ce projet de raycasting, j'utilise la même approche que celle du cours      |   # # # # # # #      |    ]         _         [    |    # # # # # #        |         |   | 
+"jeux3D". Lors de la simulation, j'offre la possibilité de passé du mode carte   |                      |   /          _          \   |  _____                |         |   |
+normale au terrain de jeu (avec affichage de la minimap transparente dans le	 |         ___          |  /	       _           \  | |__-__|  _______      |         |   |
+coin haut gauche) de modifier certaines valeurs comme la vitesse du joueur, le   |        |   |         | /	           _            \ |         |   .   |     |         |   |
+champ de vision... On aura aussi la possibilité d'activer des paramètres liés    |________|_._|_________|/             _             \|_________|___|___|_____|         |   | 
+aux rendu du terrain (ombres, textures...). Les aides seront en haut à droite.  /                       /              _              \                        \        |   |
+                                                                               /______           ______/               _               \__0____           ______\       |   | 
+Pour les textures j'ai implémenté 2 méthodes (l'une plus naïve, plus lourde). /______           ______/                _                \ |                      \      |   |
+Elles impliquent que plus la largeur de l'écran sera grande, plus le jeu sera                        /                 _                 \|_____            ______\     |   |                                             
+lent). La première récupère dans un tableau 2D chaque pixels de l'image et                          /                  _                    0                      \    |   |
+parcours ce tableau en recherchant à quelle pixel correspond l'indice (x, y)                       /                   _                    |     ._________________\___|   |
+du mur touché par le rayon, le nombre de FPS est divisé par 4/5. La seconde                       /                    _                    |___  |                     |   |
+(plus stable) consiste à rogner une colonne de l'image selon l'abcisse du mur    		         /     	               _                    \     |                     |   |         
+touché et de redimensionner l'image rogné par rapport à la taille du mur et                     /                      _                     \    |                     |   |      
+le coller.                                                                                     /                       _                      \   |                     |   |
+Je pense que l'on peut l'améliorer en stockant tout enmémoire (buffer)                        /                        _                       \  |                     |  /
+mais n'ayant pas de connaissance pour la gestion de mémoire et des buffer en                 /                         _                        \ |                     | / 
+python, je n'ai pas eu assez de temps pour approfondir cette technique.                     /                          _                         \|_____________________|/
+                                                                                           /                           _                          \
+Il est possible de lancer le jeu avec 16 ou 32 unités par cases (ou bien le               /                            _                           \
+nommbre voulu) pour obtenir une carte plus grande (à modifier manuellement).             /                             _                            \
+Nombre de cases max optimales : 16 unités : 80 * 40 (21/30 fps) 1280 * 640              /                              _                             \
+                                32 unités : 40 * 25 (20/25 fps) 1280 * 800             /                               _                              \
+                                64 unités : 20 * 15 (18/25 fps) 1280 * 975 _____      /                                _                               \
+Les performances peuvent varier selon l'ordinateur.                       /     \    /                                 _                                \
+Ces valeurs ont été obtenu avec la configuration suivante:               | !POTS |  /                                  _                                 \
+        - Intel I7 8750H                                                  \_____/  /                                   _                                  \
+        - Nvidia Geforce GTX 1070 8Go GDDR5                                  |    /                                    _                                   \
+        - 8Go RAM DDR4                                                       |   /                                     _                                    \
+        - SSD                                                                |  /                                      _                                     \
+        - Ecran 120Hz                                                        | /                                       _                                      \
+La taille de la fenêtre est dependante du nombre de cases en largeur et en   |/__________________________________      _                                       \________________________
+hauteur. Par défaut, lors du lancement du programme, on aura 32 unités avec                                            _                                        
+36*20 cases modifiables au début du module Carte.py.                                                                   _                                  ________________       
+                                                                                                                       _                                 |                |
+J'ai réfléchi sur différentes méthodes d'optimisations comme :                                                         _                                 |     VAS-Y      |
+    - Stocker dans un dictionnaire toutes les valeurs de la tangente de chaque                                         _                                 |________________|
+      angle (angle + colonne de pixel). Elle a été implémenté et permet de                                             _                                                  |
+      de gagner environs 3/4 FPS mais comme j'ai permis la modification du                                             _                                                  |
+      champ de vision (ce champs est utilisé dans le calcul d'une colonne de                                           _                                                  |
+      pixel [col_pixel = champ /largeur]), si on modifie le champ de vision                                            _                                                  |
+      il faudra tout recalculer en fonction de la nouvelle colonne de pixel.                                           _     _____________________________________________|
+                                                                                                                       _                                                  \
+    - Calculer le lancer de rayon pour 360° et stocker les valeurs dans un                                             _                                                   \
+      tableau. L'avantage se verra lors d'une rotation et l'inconvénient                                               _
+      lorsque l'on avance ou recule, il faudra tout recalculer.                                                        _                    _____
+                                                                                                                       _                  /       \
+Méthodes expérimentale :                                                                                               _              ___|___USA___|
+    - Les textures                                                                                                     _                 | B     B |
+                                                                                                                       _                 |    C    |
+    - Les ombrages. Ils s'appliquent ici sur tous les murs et le plafond.                                              _                  \__---__/
+      Je trace les plafond en utilisant des lignes verticaux et je me suis                                             _
+      rendus compte que lorsque j'utilise l'effet d'ombrage, ma méthode                                                _
+      permettait de représenter des murs avec une hauteur "infini".                                                    _
+      Des captures d'écrans ont été réalisé dans le dossier "\Images\Ombrage."                                         _
+                                                                                                                       _
+    - Les reflets sur le sols, ne s'applique qu'aux textures et sont limités                                           _
+      par la taille des murs                                                                                           _
+                                                                                                                       _
+Prochainement : - Rendre la taille de la fenêtre indépendante aux nombres de                                           _
+                  cases pour obtenir un plus grand térrain sans sortir de                                              _
+                  l'écran                                                                                              _
+                - Ajout des textures sol/plafond, sprites                                                              _
+                - Variation de la hauteur des murs                                                                     _                                                                                                                       
+                - Améliorer la méthode de variation de couleurs/textures                                               _
+                - Permettre la modification de la résolution                                                           _ 
+                - Correction du bug de gestion de cases (indice_case)                                                  _
