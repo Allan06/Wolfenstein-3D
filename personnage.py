@@ -63,6 +63,7 @@ def deplacement(posx, posy, angle, pas, carte, sens):
     y_tmp = posy - trunc(_SINTAB[angle] * pas) // sens
     # Récupération des indices
     idx, idy = indice_case(x_tmp, y_tmp, UNITE)
+
     # Vérifie la possibilité de déplacement en (x, y). Gère les colisions avec
     # les murs, (x, y) prendront leur valeurs finales (x_tmp, y_tmp) que si ces
     # derniers ne sont pas dans des murs. Permet aussi de glisser sur les murs.

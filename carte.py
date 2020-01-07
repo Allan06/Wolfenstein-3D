@@ -58,7 +58,7 @@ def _afficher_matrice(carte):
 
 # Initialisaton de la matrice
 # -----------------------------------------------------------------------------
-def creer_matrice_carte(variation, densite):
+def creer_matrice_carte(densite):
     """ Initilise une matrice selon le nombre de cases en largeur*hauteur selon
     une densité (float). La densité [0:1] represente le nombre de 1 dans la
     matrice. Plus elle sera grande plus on aura de 1.
@@ -80,13 +80,33 @@ def creer_matrice_carte(variation, densite):
     # Remplissage de la liste "l_indice" avec les indices (i, j)
     l_indice = [(i, j) for i in range(1, case_m) for j in range(1, case_n)]
     # Initialisation des valeurs de la carte aléatoirement
+
     for _ in range(nbr_elmts):
         elemt = choice(l_indice)
-        carte[elemt[0]][elemt[1]] = randint(1, NB_COUL - 1) if variation else 1
+        carte[elemt[0]][elemt[1]] = 1
         l_indice.remove(elemt)
 
     for lig in range(CASE_H):
         carte[lig] = tuple(carte[lig])
+
+    _afficher_matrice(carte)
+
+    return tuple(carte)
+
+
+# Crée une carte avec variation de couleurs
+# -----------------------------------------------------------------------------
+def varation(matrice):
+    """ Fcontion créant une nouvelle matrice avec des couleurs variées. """
+
+    carte = []
+    for lig in range(CASE_H):
+        carte += [list(matrice[lig])]
+
+    for idy in range(CASE_H):
+        for idx in range(CASE_L):
+            if carte[idy][idx]:
+                carte[idy][idx] = randint(1, NB_COUL - 1)
 
     _afficher_matrice(carte)
 

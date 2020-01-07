@@ -27,6 +27,7 @@ def mise_a_jour(chvision, res, modif=0):
     return (chvision / RAD / LARGEUR * res, chvision / RAD / MINIMAP_L * res,
             chvision / RAD)
 
+
 # =========================================================================== #
 # ==================|       FONCTION PRINCIPALE        |===================== #
 # =========================================================================== #
@@ -73,7 +74,7 @@ def jeu(densite, ch_vision, mode, affiche_infos, affiche_carte, varie, ombre,
     # -------------------------------------------------------------------------
     mini_map = creer_surface(MINIMAP_L, MINIMAP_H)   # Création surface minimap
     mini_map.fill((255, 255, 255, 140))
-    carte = creer_matrice_carte(varie, densite)        # Création matrice carte
+    carte = creer_matrice_carte(densite)        # Création matrice carte
 
     # Initialisation des paramètres de lancé de rayon
     # -------------------------------------------------------------------------
@@ -127,7 +128,7 @@ def jeu(densite, ch_vision, mode, affiche_infos, affiche_carte, varie, ombre,
                 distance_mur = ray[2] * cos(angle_r - ray[3])
                 # Calcul de la hauteur du mur et condition de dépassement
                 hmur = trunc(hauteur_mur(distance_mur, tan_ch_vision))
-                yinf = centre + hmur / 2
+                yinf = centre + hmur * 0.5
                 ysup = yinf - 2 * hmur * 0.5
                 # hmur = hmur + (yinf - (ysup + hmur))
                 # Coefficient d'ombre, float [0:1] selon la distance maximale
@@ -330,9 +331,7 @@ def jeu(densite, ch_vision, mode, affiche_infos, affiche_carte, varie, ombre,
                 elif evt.key == K_F4:
                     varie = not varie
                     # Création d'une nouvelle map selon la variation
-                    carte = creer_matrice_carte(varie, densite)
-                    joueur = init_joueur(carte)
-                    jox, joy, angle = joueur[0], joueur[1], joueur[2]
+                    carte = varation(carte)
 
                 # Activation ou non de l'ombre
                 elif evt.key == K_F5:
